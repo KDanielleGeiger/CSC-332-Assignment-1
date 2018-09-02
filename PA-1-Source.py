@@ -35,18 +35,18 @@ def main(resultDir="results"):
         ("Number One", "Number Two", "Their GCD", "Time Spent (Milliseconds)"))
     #generateStatistics(gcdsEuclid, timesEuclid)
     
-    #gcdsImproved, timesImproved = calculateImproved(pairs)
-    #generateResults("Improved_Euclid_Results.csv", pairs, gcdsImproved, timesImproved,
-    #    ("Number One", "Number Two", "Their GCD", "Time Spent (Milliseconds)"))
+    gcdsImproved, timesImproved = calculateImproved(pairs)
+    generateResults("Improved_Euclid_Results.csv", pairs, gcdsImproved, timesImproved,
+        ("Number One", "Number Two", "Their GCD", "Time Spent (Milliseconds)"))
     #generateStatistics(gcdsImproved, timesImproved)
 
     #generateConclusion(timesBF, timesEuclid, timesImproved)
 
-    ##TODO: Add improved time
-    print("\n Number1  Number2    GCD        Time(BF)     Time(Euclid)")
+    ## Output the final results in a table
+    print("\n Number1  Number2    GCD        Time(BF)     Time(Euclid)  Time(Improved)")
     for x in range(100):
-        print("{:8} {:8} {:6} {:12} ms {:12} ms".format(pairs[0][x], pairs[1][x], gcdsBF[x], timesBF[x],
-                                               timesEuclid[x]))
+        print("{:8} {:8} {:6} {:12} ms {:12} ms {:12} ms".format(pairs[0][x], pairs[1][x], gcdsBF[x], timesBF[x],
+                                               timesEuclid[x], timesImproved[x]))
     
 ## Generate 100 pairs of random integers
 def generatePairs(rangeMin, rangeMax):
@@ -115,7 +115,45 @@ def calculateEuclid(pairs):
     return gcds, times
 
 ## Calculate the GCD of all pairs using Euclid's Algorithm (Improved)
-#def calculateImproved(pairs):
+def calculateImproved(pairs):
+    gcds = []
+    times = []
+
+    for x in range(100):
+        startTime = time.perf_counter_ns()
+        a = abs(pairs[0][x])
+        b = abs(pairs[1][x])
+
+        if a == 0:
+            gcds.append(b)
+        elif b == 0:
+            gcds.append(a)
+        elif a == 1:
+            gcds.append(a)
+        elif b == 1:
+            gcds.append(b)
+        else:
+            y = max(a, b)
+            z = min(a, b)
+            remainder = None
+
+            while remainder != 0:
+                remainder = y - z
+                if remainder > z:
+                    remainder = remainder - z
+                    if remainder > z:
+                        remainder = remainder - z
+                        if remainder > z:
+                            remainder = y % z
+                y = z
+                z = remainder
+
+            gcds.append(y)
+
+        elapsedTime = (time.perf_counter_ns() - startTime) / 1000000
+        times.append(elapsedTime)
+
+    return gcds, times
 
 ## Generate an Excel spreadsheet for each algorithm with the following information:
 ## Number One, Number Two, Their GCD, Time Spent (Milliseconds)
