@@ -48,6 +48,7 @@ def main(resultDir="results"):
                                                                  timesBF[x], timesEuclid[x], timesImproved[x]))
 
     generateConclusion(timesBF, timesEuclid, timesImproved)
+    input()
     
 ##  Generate 100 pairs of random integers
 def generatePairs(rangeMin, rangeMax):
@@ -61,7 +62,7 @@ def calculateBruteForce(pairs):
     times = []
     
     for x in range(100):
-        startTime = time.perf_counter_ns()
+        startTime = time.perf_counter()
         y = max(abs(pairs[0][x]), abs(pairs[1][x]))
         z = min(abs(pairs[0][x]), abs(pairs[1][x]))
 
@@ -75,7 +76,7 @@ def calculateBruteForce(pairs):
                     gcds.append(c)
                     break
                
-        elapsedTime = (time.perf_counter_ns() - startTime) / 1000000
+        elapsedTime = round(((time.perf_counter() - startTime) * 1000), 6)
         times.append(elapsedTime)
     
     return gcds, times
@@ -86,7 +87,7 @@ def calculateEuclid(pairs):
     times = []
     
     for x in range(100):
-        startTime = time.perf_counter_ns()
+        startTime = time.perf_counter()
         a = abs(pairs[0][x])
         b = abs(pairs[1][x])
         
@@ -110,7 +111,7 @@ def calculateEuclid(pairs):
                 
             gcds.append(y)
 
-        elapsedTime = (time.perf_counter_ns() - startTime) / 1000000
+        elapsedTime = round(((time.perf_counter() - startTime) * 1000), 6)
         times.append(elapsedTime)
 
     return gcds, times
@@ -121,7 +122,7 @@ def calculateImproved(pairs):
     times = []
 
     for x in range(100):
-        startTime = time.perf_counter_ns()
+        startTime = time.perf_counter()
         a = abs(pairs[0][x])
         b = abs(pairs[1][x])
 
@@ -151,7 +152,7 @@ def calculateImproved(pairs):
 
             gcds.append(y)
 
-        elapsedTime = (time.perf_counter_ns() - startTime) / 1000000
+        elapsedTime = round(((time.perf_counter() - startTime) * 1000), 6)
         times.append(elapsedTime)
 
     return gcds, times
